@@ -309,6 +309,11 @@ class WebviewManager {
             webView.goBack();
         }
     }
+
+    boolean canGoBack(MethodCall call, MethodChannel.Result result) {
+        return webView.canGoBack();
+    }
+
     /**
     * Navigates forward on the Webview.
     */
@@ -363,7 +368,7 @@ class WebviewManager {
 
         @JavascriptInterface
         public void postMessage(String message) {
-//            Log.e("zqt","get msg="+message);
+            Log.e("zqt","get msg="+message);
             webviewManager.onMessage(message);
         }
     }

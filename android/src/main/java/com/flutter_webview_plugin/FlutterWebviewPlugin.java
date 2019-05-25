@@ -82,6 +82,9 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
             case "linkBridge":
                 linkBridge(call, result);
                 break;
+            case "canGoBack":
+                canGoBack(call, result);
+                break;
             default:
                 result.notImplemented();
                 break;
@@ -259,6 +262,12 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
     private void linkBridge(MethodCall call, final MethodChannel.Result result) {
         if (webViewManager != null) {
             webViewManager.linkBridge();
+        }
+    }
+
+    private void canGoBack(MethodCall call, final MethodChannel.Result result) {
+        if (webViewManager != null) {
+            result.success(webViewManager.canGoBack());
         }
     }
 }

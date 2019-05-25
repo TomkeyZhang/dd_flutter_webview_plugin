@@ -66,6 +66,8 @@ static NSString *const kPostMessageHost = @"postMessage";
     } else if ([@"back" isEqualToString:call.method]) {
         [self back];
         result(nil);
+    } else if ([@"canGoBack" isEqualToString:call.method]) {
+        result(@(!self.webview && self.webview.canGoBack));
     } else if ([@"forward" isEqualToString:call.method]) {
         [self forward];
         result(nil);

@@ -64,6 +64,7 @@ class FlutterWebviewPlugin {
         }
 
       case 'onWebviewMessage':
+        print("onWebviewMessage:${call.arguments['data']}");
         _onWebviewMessage.add(call.arguments['data']);
         break;
     }
@@ -184,6 +185,8 @@ class FlutterWebviewPlugin {
 
   /// Navigates back on the Webview.
   Future<Null> goBack() async => await _channel.invokeMethod('back');
+
+  Future<bool> canGoBack() async => await _channel.invokeMethod('canGoBack')==1;
 
   /// Navigates forward on the Webview.
   Future<Null> goForward() async => await _channel.invokeMethod('forward');
