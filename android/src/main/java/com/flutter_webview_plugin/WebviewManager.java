@@ -310,10 +310,6 @@ class WebviewManager {
         }
     }
 
-    boolean canGoBack(MethodCall call, MethodChannel.Result result) {
-        return webView.canGoBack();
-    }
-
     /**
     * Navigates forward on the Webview.
     */
