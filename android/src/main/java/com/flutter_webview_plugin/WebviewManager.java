@@ -92,12 +92,10 @@ class WebviewManager {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
                     case KeyEvent.KEYCODE_BACK:
-                        if (webView.canGoBack()) {
+                        if (webView != null && webView.canGoBack()) {
                             webView.goBack();
-                        } else {
-                            close();
+                            return true;
                         }
-                        return true;
                     }
                 }
 
@@ -327,7 +325,7 @@ class WebviewManager {
     * Checks if going back on the Webview is possible.
     */
     boolean canGoBack() {
-        return webView.canGoBack();
+        return webView != null && webView.canGoBack();
     }
     /**
     * Checks if going forward on the Webview is possible.
@@ -364,7 +362,7 @@ class WebviewManager {
 
         @JavascriptInterface
         public void postMessage(String message) {
-            Log.e("zqt","get msg="+message);
+//            Log.e("zqt","get msg="+message);
             webviewManager.onMessage(message);
         }
     }
