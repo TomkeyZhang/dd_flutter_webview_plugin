@@ -186,6 +186,7 @@ class WebviewManager {
     }
 
     private void clearCache() {
+        if (webView == null) return;
         webView.clearCache(true);
         webView.clearFormData();
     }
@@ -257,7 +258,8 @@ class WebviewManager {
     }
 
     void reloadUrl(String url) {
-        webView.loadUrl(url);
+        if (webView != null)
+            webView.loadUrl(url);
     }
 
     void close(MethodCall call, MethodChannel.Result result) {
@@ -280,6 +282,7 @@ class WebviewManager {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     void eval(MethodCall call, final MethodChannel.Result result) {
+        if (webView == null) return;
         String code = call.argument("code");
 
         webView.evaluateJavascript(code, new ValueCallback<String>() {
@@ -319,7 +322,8 @@ class WebviewManager {
     }
 
     void resize(FrameLayout.LayoutParams params) {
-        webView.setLayoutParams(params);
+        if (webView != null)
+            webView.setLayoutParams(params);
     }
     /**
     * Checks if going back on the Webview is possible.
@@ -332,7 +336,7 @@ class WebviewManager {
     */
 
     boolean canGoForward() {
-        return webView.canGoForward();
+        return webView != null && webView.canGoForward();
     }
 
     void hide(MethodCall call, MethodChannel.Result result) {
@@ -374,6 +378,7 @@ class WebviewManager {
     }
 
     public void postMessage(MethodCall call, final MethodChannel.Result result) {
+        if (webView == null) return;
         String message = call.argument("data");
         try {
             JSONObject eventInitDict = new JSONObject();
@@ -391,11 +396,13 @@ class WebviewManager {
     }
 
     protected void enableMessaging() {
+        if (webView == null) return;
 //        Log.e("zqt","enableMessaging"+webView.getSettings().getJavaScriptEnabled());
         webView.addJavascriptInterface(new JsObject(this), CHANNEL_NAME);
     }
 
     protected void linkBridge() {
+        if (webView == null) return;
 //        Log.e("zqt","linkBridge");
         String script = "(" + "window.originalPostMessage = window.postMessage,"
                 + "window.postMessage = function(data) {" + CHANNEL_NAME + ".postMessage(String(data));" + "}" + ")";
