@@ -18,6 +18,7 @@ flutter:
     androidPackage: com.flutter_webview_plugin
     pluginClass: FlutterWebviewPlugin
 
+
 dependencies:
   flutter:
     sdk: flutter
