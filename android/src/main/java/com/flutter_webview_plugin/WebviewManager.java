@@ -5,7 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ class WebviewManager {
     private ValueCallback<Uri[]> mUploadMessageArray;
     private final static int FILECHOOSER_RESULTCODE = 1;
     private static final String CHANNEL_NAME = "flutter_webview_plugin";
+    Handler handler = new Handler(Looper.getMainLooper());
 
     @TargetApi(7)
     class ResultHandler {
@@ -359,15 +361,23 @@ class WebviewManager {
 
     protected static class JsObject {
         WebviewManager webviewManager;
+        Handler handler;
 
-        JsObject(WebviewManager _webviewManager) {
+        JsObject(WebviewManager _webviewManager, Handler _handler) {
             webviewManager = _webviewManager;
+            handler = _handler;
         }
 
         @JavascriptInterface
-        public void postMessage(String message) {
+        public void postMessage(final String message) {
 //            Log.e("zqt","get msg="+message);
-            webviewManager.onMessage(message);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    webviewManager.onMessage(message);
+                }
+            });
+
         }
     }
 
@@ -398,7 +408,7 @@ class WebviewManager {
     protected void enableMessaging() {
         if (webView == null) return;
 //        Log.e("zqt","enableMessaging"+webView.getSettings().getJavaScriptEnabled());
-        webView.addJavascriptInterface(new JsObject(this), CHANNEL_NAME);
+        webView.addJavascriptInterface(new JsObject(this, handler), CHANNEL_NAME);
     }
 
     protected void linkBridge() {
